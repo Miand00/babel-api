@@ -1,4 +1,3 @@
-# Babek-api using ci-restserver
-Check the recent version at https://github.com/chriskacerguis/codeigniter-restserver
+# Babel-api using ci-restserver
 
-My alternate version https://github.com/ardisaurus/old-rest-ci
+Web API server for Babel
