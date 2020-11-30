@@ -14,8 +14,8 @@ class user extends REST_Controller {
   }
 
   function index_get(){
-    $google_id = $this->get('google_id');
-    $user = $this->user_model->check_user($google_id);
+    $id = $this->get('id');
+    $user = $this->user_model->get_user_id($id);
     if(count($user)>0){
       $this->response(array(
         "status" => 1,
