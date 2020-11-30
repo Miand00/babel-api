@@ -28,7 +28,7 @@ class place_image extends REST_Controller{
         "status" => 0,
         "message" => "No image found",
         "data" => $places_image
-      ), REST_Controller::HTTP_NOT_FOUND);
+      ), REST_Controller::HTTP_OK);
     }
   }
 }
