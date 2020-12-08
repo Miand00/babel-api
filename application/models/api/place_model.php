@@ -8,7 +8,7 @@ class place_model extends CI_Model{
   }
 
   public function get_place(){
-    $query = $this->db->query("SELECT a.*, d.image, CAST(COALESCE((b.totalRating/c.totalUser),0) AS DECIMAL(4, 2)) AS rating FROM places a, ( SELECT place_id, SUM(rating) AS totalRating FROM ratings GROUP BY place_id ) b, ( SELECT place_id, COUNT(user_id) AS totalUser FROM ratings GROUP BY place_id ) c, places_images d WHERE c.place_id = a.id AND b.place_id = a.id AND d.place_id = a.id GROUP BY a.id ORDER BY RAND() LIMIT 20");
+    $query = $this->db->query("SELECT a.*, d.image, CAST(COALESCE((b.totalRating/c.totalUser),0) AS DECIMAL(4, 1)) AS rating FROM places a, ( SELECT place_id, SUM(rating) AS totalRating FROM ratings GROUP BY place_id ) b, ( SELECT place_id, COUNT(user_id) AS totalUser FROM ratings GROUP BY place_id ) c, places_images d WHERE c.place_id = a.id AND b.place_id = a.id AND d.place_id = a.id GROUP BY a.id ORDER BY RAND() LIMIT 20");
     return $query->result();
   }
 
