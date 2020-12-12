@@ -16,13 +16,15 @@ class place extends REST_Controller {
 
   function index_get(){
     $id = $this->get('id');
+    $category = $this->get('category');
     $places = $this->place_model->get_place();
-
     if(count($places)>0){
-      if ($id == '') {
+      if ($id == '' && $category == '') {
         $places = $this->place_model->get_place();
-      } else {
+      } else if($id) {
         $places = $this->place_model->get_place_id($id);
+      } else if($category){
+        $places = $this->place_model->get_place_category($category);
       }
       $this->response(array(
         "status" => 1,

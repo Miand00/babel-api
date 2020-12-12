@@ -18,6 +18,11 @@ class place_model extends CI_Model{
     return $query;
   }
 
+  public function get_place_category($category){
+    $query = $this->db->query("SELECT a.*, d.image, CAST(COALESCE((b.totalRating/c.totalUser),0) AS DECIMAL(4, 1)) AS rating FROM places a, ( SELECT place_id, SUM(rating) AS totalRating FROM ratings GROUP BY place_id ) b, ( SELECT place_id, COUNT(user_id) AS totalUser FROM ratings GROUP BY place_id ) c, places_images d, categories e WHERE c.place_id = a.id AND b.place_id = a.id AND d.place_id = a.id AND e.place_id = a.id AND e.category = '".$category."' GROUP BY a.id");
+    return $query->result();
+  }
+
   public function get_image($id){
     $query = $this->db->query("SELECT image FROM `".$this->db->dbprefix('places')."` WHERE id='".$id."'");
     return $query;
