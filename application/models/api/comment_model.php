@@ -10,6 +10,11 @@ class comment_model extends CI_Model{
     $query = $this->db->query("SELECT comments.*,users.name FROM comments, users WHERE comments.user_id = users.id AND comments.place_id=".$id);
     return $query->result();
   }
+
+  public function insert_comment($data){
+    $query = $this->db->insert('comments', $data);
+    return $query;
+  }
 }
 
 ?>
