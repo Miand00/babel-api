@@ -31,6 +31,26 @@ class comment extends REST_Controller {
       ), REST_Controller::HTTP_NOT_FOUND);
     }
   }
+
+  function index_post(){
+    $data = array(
+      'place_id'=>$this->post('place_id'),
+      'user_id'=>$this->post('user_id'),
+      'comment'=>$this->post('comment'));
+    $insert = $this->comment_model->insert_comment($data);
+    if ($insert) {
+      $this->response(array(
+        "status" => 1,
+        "message" => "Comment inserted",
+        "data" => $data
+      ), REST_Controller::HTTP_OK);
+    } else {
+      $this->response(array(
+        "status" => 0,
+        "message" => "Failed to insert comment"
+      ), REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
+    }
+  }
 }
 
 ?>

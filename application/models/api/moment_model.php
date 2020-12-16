@@ -16,6 +16,11 @@ class moment_model extends CI_Model{
     $query = $this->db->get('moments')->result();
     return $query;
   }
+
+  public function insert_moment($data){
+    $query = $this->db->insert('moments', $data);
+    return $query;
+  }
 }
 
 ?>

@@ -37,5 +37,39 @@ class moment extends REST_Controller {
       ), REST_Controller::HTTP_NOT_FOUND);
     }
   }
+
+  function index_post(){
+    $flag=$this->post('flag');
+
+		if($flag=="INSERT"){	
+			$config['upload_path'] = './image/moment';
+			$config['allowed_types'] = 'png|jpg|jpeg';
+			$config['max_size'] = '20480';
+			$image = $_FILES['image']['name'];
+			$path="./image/moment";
+			$this->load->library('upload', $config);
+			
+			if (!$this->upload->do_upload('image')) 
+			{
+				$this->response(array(
+          "status" => 0,
+          "message" => "Failed to insert moment"
+        ), REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
+			} 
+			else 
+			{
+				$data = array(
+							'user_id'=> $this->post('user_id'),
+							'title' => $this->post('title'),
+							'story'=> $this->post('story'),
+              'image'=> $image);
+        $insert = $this->moment_model->insert_moment($data);
+        $this->response(array(
+          "status" => 1,
+          "message" => "Moment has been created"
+        ), REST_Controller::HTTP_OK);
+			}
+		}
+  }
 }
 ?>

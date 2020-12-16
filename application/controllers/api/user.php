@@ -15,18 +15,35 @@ class user extends REST_Controller {
 
   function index_get(){
     $id = $this->get('id');
-    $user = $this->user_model->get_user_id($id);
-    if(count($user)>0){
-      $this->response(array(
-        "status" => 1,
-        "message" => "User found",
-        "data" => $user
-      ), REST_Controller::HTTP_OK);
-    }else{
-      $this->response(array(
-        "status" => 0,
-        "message" => "User not found"
-      ), REST_Controller::HTTP_OK);
+    $google_id = $this->get('google_id');
+    if($id){
+      $user = $this->user_model->get_user_id($id);
+      if(count($user)>0){
+        $this->response(array(
+          "status" => 1,
+          "message" => "User found",
+          "data" => $user
+        ), REST_Controller::HTTP_OK);
+      }else{
+        $this->response(array(
+          "status" => 0,
+          "message" => "User not found"
+        ), REST_Controller::HTTP_OK);
+      }
+    }else if($google_id){
+      $user = $this->user_model->check_user($google_id);
+      if(count($user)>0){
+        $this->response(array(
+          "status" => 1,
+          "message" => "User found",
+          "data" => $user
+        ), REST_Controller::HTTP_OK);
+      }else{
+        $this->response(array(
+          "status" => 0,
+          "message" => "User not found"
+        ), REST_Controller::HTTP_OK);
+      }
     }
   }
 
