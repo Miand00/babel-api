@@ -45,11 +45,11 @@ class place extends REST_Controller {
 
 		if($flag=="INSERT")
 		{	
-			$config['upload_path'] = './image/';
-			$config['allowed_types'] = 'png|jpg';
+			$config['upload_path'] = './image/place';
+			$config['allowed_types'] = 'png|jpg|jpeg';
 			$config['max_size'] = '20480';
 			$image = $_FILES['image']['name'];
-			$path="./image/";
+			$path="./image/place";
 			$this->load->library('upload', $config);
 			
 			if (!$this->upload->do_upload('image')) 
@@ -61,12 +61,22 @@ class place extends REST_Controller {
 			} 
 			else 
 			{
+        $id = $this->place_model->get_maxid()+1;
 				$data = array(
-							'id'=> $this->post('id'),
-							'name' => $this->post('name'),
-							'description'=> $this->post('description'),
-              'image'=> $image);
+          'id' => $id,
+          'name' => $this->post('name'),
+          'description'=> $this->post('description'),
+          'latitude'=> $this->post('latitude'),
+          'longitude'=> $this->post('longitude'),
+          'user_id'=> $this->post('user_id'));
         $insert = $this->place_model->insert_place($data);
+        $data2 = array(
+          'place_id' => $id,
+          'image'=> $image);
+        $insert = $this->place_model->insert_image($data2);
+        $data3 = array(
+          'place_id' => $id);
+        $insert = $this->place_model->insert_rating($data3);
         $this->response(array(
           "status" => 1,
           "message" => "Place has been created"
