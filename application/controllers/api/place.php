@@ -17,14 +17,17 @@ class place extends REST_Controller {
   function index_get(){
     $id = $this->get('id');
     $category = $this->get('category');
+    $user_id = $this->get('user_id');
     $places = $this->place_model->get_place();
     if(count($places)>0){
-      if ($id == '' && $category == '') {
+      if ($id == '' && $category == '' && $user_id == '') {
         $places = $this->place_model->get_place();
       } else if($id) {
         $places = $this->place_model->get_place_id($id);
       } else if($category){
         $places = $this->place_model->get_place_category($category);
+      } else if($user_id){
+        $places = $this->place_model->get_place_owned($user_id);
       }
       $this->response(array(
         "status" => 1,
@@ -77,6 +80,10 @@ class place extends REST_Controller {
         $data3 = array(
           'place_id' => $id);
         $insert = $this->place_model->insert_rating($data3);
+        $data4 = array(
+          'place_id' => $id,
+          'category' => $this->post('category'));
+        $insert = $this->place_model->insert_category($data4);
         $this->response(array(
           "status" => 1,
           "message" => "Place has been created"
@@ -85,10 +92,10 @@ class place extends REST_Controller {
 		}
 		else if($flag=="UPDATE")
 		{
-			$config['upload_path'] = './image/';
-			$config['allowed_types'] = 'png|jpg';
+			$config['upload_path'] = './image/place';
+			$config['allowed_types'] = 'png|jpg|jpeg';
 			$config['max_size'] = '20480';
-			$path="./image/";
+			$path="./image/place";
 			$image = $_FILES['image']['name'];
 			$this->load->library('upload', $config);
 			
@@ -122,14 +129,30 @@ class place extends REST_Controller {
 		}	
   }
 
+  function index_put() {
+    $id = $this->put('id');
+    $data = array(
+                'id' => $this->put('id'),
+                'name' => $this->put('name'),
+                'description' => $this->put('description'),
+                'latitude' => $this->put('latitude'),
+                'longitude' => $this->put('longitude'));
+    $update = $this->place_model->update_place($id,$data);
+    if ($update) {
+        $this->response($data, 200);
+    } else {
+        $this->response(array('status' => 'fail', 502));
+    }
+  }
+
   function index_delete() {
     $id = $this->delete('id');
-
     $queryimg = $this->place_model->get_image($id);
-    $row = $queryimg->row();
-    $picturepath="./image/".$row->image;	
-    unlink($picturepath);
-
+    foreach ($queryimg->result() as $row)
+    {
+      $picturepath="./image/place/".$row->image;	
+      unlink($picturepath);
+    }
     $delete = $this->place_model->delete_place($id);
     if ($delete) {
       $this->response(array(
