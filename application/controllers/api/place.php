@@ -139,9 +139,15 @@ class place extends REST_Controller {
                 'longitude' => $this->put('longitude'));
     $update = $this->place_model->update_place($id,$data);
     if ($update) {
-        $this->response($data, 200);
+      $this->response(array(
+        "status" => 1,
+        "message" => "Place has been updated"
+      ), REST_Controller::HTTP_OK);
     } else {
-        $this->response(array('status' => 'fail', 502));
+      $this->response(array(
+        "status" => 0,
+        "message" => "Failed to update place"
+      ), REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
     }
   }
 
