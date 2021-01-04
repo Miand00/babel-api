@@ -15,6 +15,18 @@ class comment_model extends CI_Model{
     $query = $this->db->insert('comments', $data);
     return $query;
   }
+
+  public function update_comment($id, $data){
+    $this->db->where('id', $id);
+    $query = $this->db->update('comments', $data);
+    return $query;
+  }
+
+  public function delete_comment($id){
+    $this->db->where('id', $id);
+    $query = $this->db->delete('comments');
+    return $query;
+  }
 }
 
 ?>

@@ -51,6 +51,42 @@ class comment extends REST_Controller {
       ), REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
     }
   }
+
+  function index_put(){
+    $id = $this->put('id');
+    $data = array(
+      'comment' => $this->put('comment'),
+      'place_id' => $this->put('place_id'),
+      'user_id' => $this->put('user_id'));
+    $update = $this->comment_model->update_comment($id,$data);
+    if ($update) {
+      $this->response(array(
+        "status" => 1,
+        "message" => "Comment has been updated"
+      ), REST_Controller::HTTP_OK);
+    } else {
+      $this->response(array(
+        "status" => 0,
+        "message" => "Failed to update comment"
+      ), REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
+    }
+  }
+
+  function index_delete() {
+    $id = $this->delete('id');
+    $delete = $this->comment_model->delete_comment($id);
+    if ($delete) {
+      $this->response(array(
+        "status" => 1,
+        "message" => "Comment data deleted successfully"
+      ),REST_Controller::HTTP_OK);
+    } else {
+      $this->response(array(
+        "status" => 0,
+        "message" => "Failed to deleted"
+      ), REST_Controller::HTTP_NOT_FOUND);
+    }
+  }
 }
 
 ?>
