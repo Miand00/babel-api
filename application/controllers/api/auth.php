@@ -24,8 +24,7 @@ class auth extends REST_Controller {
     } else {
       $this->response(array(
         "status" => 0,
-        "message" => "Auth failed",
-        "data" => $userid
+        "message" => "Auth failed"
       ), REST_Controller::HTTP_OK);
     }
   }
