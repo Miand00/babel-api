@@ -17,12 +17,14 @@ class guide extends REST_Controller {
 
   function index_get(){
     $id = $this->get('id');
+    $search = $this->get('search');
     $guides = $this->guide_model->get_guide();
-
     if(count($guides)>0){
-      if ($id == '') {
+      if ($id == ''&& $search == '') {
         $guides = $this->guide_model->get_guide();
-      } else {
+      } else if($search){
+        $guides = $this->guide_model->get_guide_search($search);
+      } else if($id) {
         $guides = $this->guide_model->get_guide_id($id);
       }
       $this->response(array(

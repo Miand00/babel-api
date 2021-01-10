@@ -18,10 +18,13 @@ class place extends REST_Controller {
     $id = $this->get('id');
     $category = $this->get('category');
     $user_id = $this->get('user_id');
+    $search = $this->get('search');
     $places = $this->place_model->get_place();
     if(count($places)>0){
-      if ($id == '' && $category == '' && $user_id == '') {
+      if ($id == '' && $category == '' && $user_id == '' && $search == '') {
         $places = $this->place_model->get_place();
+      } else if($search){
+        $places = $this->place_model->get_place_search($category,$search);
       } else if($id) {
         $places = $this->place_model->get_place_id($id);
       } else if($category){

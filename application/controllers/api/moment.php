@@ -17,11 +17,13 @@ class moment extends REST_Controller {
   function index_get(){
     $id = $this->get('id');
     $user_id = $this->get('user_id');
+    $search = $this->get('search');
     $moments = $this->moment_model->get_moment();
-
     if(count($moments)>0){
-      if ($id == '' && $user_id == '') {
+      if ($id == '' && $user_id == '' && $search == '') {
         $moments = $this->moment_model->get_moment();
+      } else if($search){
+        $moments = $this->moment_model->get_moment_search($search);
       } else if($id){
         $moments = $this->moment_model->get_moment_id($id);
       } else if($user_id){

@@ -17,6 +17,11 @@ class guide_model extends CI_Model{
     $query = $this->db->get('guides')->result();
     return $query;
   }
+
+  public function get_guide_search($search){
+    $query = $this->db->query("SELECT * FROM guides WHERE guides.name LIKE '%".$search."%'");
+    return $query->result();
+  }
 }
 
 ?>

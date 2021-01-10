@@ -7,8 +7,8 @@ class moment_model extends CI_Model{
   }
 
   public function get_moment(){
-    $query = $this->db->get('moments')->result();
-    return $query;
+    $query = $this->db->query("SELECT * FROM moments GROUP BY moments.id ORDER BY moments.id DESC LIMIT 20");
+    return $query->result();
   }
 
   public function get_moment_id($id){
@@ -26,6 +26,11 @@ class moment_model extends CI_Model{
     $this->db->where('user_id', $id);
     $query = $this->db->get('moments')->result();
     return $query;
+  }
+
+  public function get_moment_search($search){
+    $query = $this->db->query("SELECT * FROM moments WHERE moments.title LIKE '%".$search."%'");
+    return $query->result();
   }
 
   public function insert_moment($data){
