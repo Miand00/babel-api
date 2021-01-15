@@ -68,13 +68,17 @@ class place extends REST_Controller {
 			else 
 			{
         $id = $this->place_model->get_maxid()+1;
+        $category = $this->place_model->get_category($this->post('category'));
+        $row = $category->row();
+        $category_id = $row->id;
 				$data = array(
           'id' => $id,
           'name' => $this->post('name'),
           'description'=> $this->post('description'),
           'latitude'=> $this->post('latitude'),
           'longitude'=> $this->post('longitude'),
-          'user_id'=> $this->post('user_id'));
+          'user_id'=> $this->post('user_id'),
+          'category_id'=> $category_id);
         $insert = $this->place_model->insert_place($data);
         $data2 = array(
           'place_id' => $id,
@@ -83,10 +87,6 @@ class place extends REST_Controller {
         $data3 = array(
           'place_id' => $id);
         $insert = $this->place_model->insert_rating($data3);
-        $data4 = array(
-          'place_id' => $id,
-          'category' => $this->post('category'));
-        $insert = $this->place_model->insert_category($data4);
         $this->response(array(
           "status" => 1,
           "message" => "Place has been created"
